@@ -9,16 +9,13 @@ namespace LabyringthConsole
     internal class Game
     {
         private int _totalPoint = 0;
-        private int _temp = 0;
-        readonly Random rnd = new Random();
-        private readonly Map map;
+        private readonly Random _rnd = new Random();
+        private readonly Map _map;
         private Pointer _pointer;
-        private string log = "";
 
         public Game(int width, int height)
         {
-
-            map = new Map(width, height);
+            _map = new Map(width, height);
         }
 
         internal void Run()
@@ -26,10 +23,6 @@ namespace LabyringthConsole
             bool quit = true;
             //init game
             _pointer = new Pointer();
-            //PopulateMap();
-
-
-
 
             // game loop
             do
@@ -40,12 +33,11 @@ namespace LabyringthConsole
                 // read input
                 ConsoleKey key = GetInput();
 
-
                 // process actions
                 switch (key)
                 {
                     case (ConsoleKey.DownArrow):
-                        if (_pointer.Y < map.Height - 1) _pointer.Y += 1;
+                        if (_pointer.Y < _map.Height - 1) _pointer.Y += 1;
                         break;
                     case (ConsoleKey.UpArrow):
                         if (_pointer.Y > 0) _pointer.Y -= 1;
@@ -54,7 +46,7 @@ namespace LabyringthConsole
                         if (_pointer.X > 0) _pointer.X -= 1;
                         break;
                     case (ConsoleKey.RightArrow):
-                        if (_pointer.X < map.Width - 1) _pointer.X += 1;
+                        if (_pointer.X < _map.Width - 1) _pointer.X += 1;
                         break;
                     case ConsoleKey.Escape:
                         quit = false;
@@ -64,8 +56,6 @@ namespace LabyringthConsole
                         Console.WriteLine("Please use arrow keys");
                         break;
                 }
-
-
             } while (quit);
 
             // game over
@@ -83,12 +73,12 @@ namespace LabyringthConsole
         private void PrintMap()
         {
             Console.WriteLine("________________");
-            for (int y = 0; y < map.Height; y++)
+            for (int y = 0; y < _map.Height; y++)
             {
                 Console.Write("|");
-                for (int x = 0; x < map.Width; x++)
+                for (int x = 0; x < _map.Width; x++)
                 {
-                    var cell = map.Cells[x, y];
+                    var cell = _map.Cells[x, y];
                     Console.Write(" ");
 
                     Block blockToMove = null;
@@ -99,8 +89,9 @@ namespace LabyringthConsole
 
                     else
                     {
-                        Console.Write(rnd.Next(1, 9));
+                        Console.Write(_rnd.Next(1, 10));
                     }
+
                     if (blockToMove != null)
                     {
                         Console.ForegroundColor = blockToMove.Color;

@@ -11,7 +11,7 @@ namespace LabyringthConsole
         public int X { get; set; }
         public int Y { get; set; }
 
-        public Pointer() : base("H")
+        public Pointer() : base("P")
         {
             Color = ConsoleColor.Yellow;
         }
