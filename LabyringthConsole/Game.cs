@@ -12,7 +12,8 @@ namespace LabyringthConsole
         private readonly Random _rnd = new Random();
         private readonly Map _map;
         private Pointer _pointer;
-
+        private ConsoleKey _lastKeyPressed;
+        private bool _quit = true;
         public Game(int width, int height)
         {
             _map = new Map(width, height);
@@ -20,7 +21,6 @@ namespace LabyringthConsole
 
         internal void Run()
         {
-            bool quit = true;
             //init game
             _pointer = new Pointer();
 
@@ -34,37 +34,94 @@ namespace LabyringthConsole
                 ConsoleKey key = GetInput();
 
                 // process actions
-                switch (key)
-                {
-                    case (ConsoleKey.DownArrow):
-                        if (_pointer.Y < _map.Height - 1) _pointer.Y += 1;
-                        break;
-                    case (ConsoleKey.UpArrow):
-                        if (_pointer.Y > 0) _pointer.Y -= 1;
-                        break;
-                    case (ConsoleKey.LeftArrow):
-                        if (_pointer.X > 0) _pointer.X -= 1;
-                        break;
-                    case (ConsoleKey.RightArrow):
-                        if (_pointer.X < _map.Width - 1) _pointer.X += 1;
-                        break;
-                    case ConsoleKey.Escape:
-                        quit = false;
-                        Console.Clear();
-                        break;
-                    default:
-                        Console.WriteLine("Please use arrow keys");
-                        break;
-                }
-            } while (quit);
+                CheckKey(key);
+
+
+            } while (_quit);
 
             // game over
         }
 
 
+        private void CheckKey(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case (ConsoleKey.DownArrow):
+                    if (_pointer.Y < _map.Height - 1)
+                    {
+                        if (ConsoleKey.DownArrow == _lastKeyPressed)
+                        {
+                            _lastKeyPressed = key;
+                            _pointer.Y -= 1;
+                        }
+                        else
+                        {
+                            _lastKeyPressed = ConsoleKey.UpArrow;
+                        }
+                        _pointer.Y += 1;
+                    }
+                    break;
+                case (ConsoleKey.UpArrow):
+                    if (_pointer.Y > 0)
+                    {
+                        if (ConsoleKey.UpArrow == _lastKeyPressed)
+                        {
+                            _lastKeyPressed = key;
+                            _pointer.Y += 1;
+                        }
+                        else
+                        {
+                            _lastKeyPressed = ConsoleKey.DownArrow;
+                        }
+                        _pointer.Y -= 1;
+                    }
+                    break;
+                case (ConsoleKey.LeftArrow):
+                    if (_pointer.X > 0)
+                    {
+                        if (ConsoleKey.LeftArrow == _lastKeyPressed)
+                        {
+                            _lastKeyPressed = key;
+                            _pointer.X += 1;
+                        }
+                        else
+                        {
+                            _lastKeyPressed = ConsoleKey.RightArrow;
+                        }
+                        _pointer.X -= 1;
+                    }
+                    break;
+                case (ConsoleKey.RightArrow):
+                    if (_pointer.X < _map.Width - 1)
+                    {
+                        if (ConsoleKey.RightArrow == _lastKeyPressed)
+                        {
+                            _lastKeyPressed = key;
+                            _pointer.X -= 1;
+                        }
+                        else
+                        {
+                            _lastKeyPressed = ConsoleKey.LeftArrow;
+                        }
+                        _pointer.X += 1;
+                    }
+                    break;
+                case ConsoleKey.Escape:
+                    _quit = false;
+                    Console.Clear();
+                    break;
+                default:
+                    Console.WriteLine("Please use arrow keys");
+                    break;
+            }
+
+        }
+
+
         private ConsoleKey GetInput()
         {
-            Console.WriteLine("\n\nPress arrowkeys to keep playing or \npress escape for main menu");
+            Console.WriteLine("\n\nPress arrowkeys to keep playing or \npress Esc for main menu");
             var keyInfo = Console.ReadKey(intercept: true);
             var key = keyInfo.Key;
             return key;
@@ -75,6 +132,8 @@ namespace LabyringthConsole
             Console.WriteLine("________________");
             for (int y = 0; y < _map.Height; y++)
             {
+                //Console.BackgroundColor = ConsoleColor.Gray;
+
                 Console.Write("|");
                 for (int x = 0; x < _map.Width; x++)
                 {

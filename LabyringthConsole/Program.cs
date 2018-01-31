@@ -11,9 +11,9 @@ namespace LabyringthConsole
     {
         static void Main(string[] args)
         {
+            //Console.BackgroundColor = ConsoleColor.Gray;
             Game game = new Game(width: 5, height: 5);
             bool quit = true;
-            Console.ForegroundColor = ConsoleColor.Cyan;
 
             Console.WriteLine("Welcome to the Lybrinth game!");
             while (quit)
@@ -52,7 +52,6 @@ namespace LabyringthConsole
         {
             Console.Write(question);
             return Console.ReadLine();
-
         }
     }
 }
