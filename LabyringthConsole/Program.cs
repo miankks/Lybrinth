@@ -15,10 +15,10 @@ namespace LabyringthConsole
             Game game = new Game(width: 5, height: 5);
             bool quit = true;
 
-            Console.WriteLine("Welcome to the Lybrinth game!");
+            Console.WriteLine("\t\t\tWelcome to the Lybrinth game!");
             while (quit)
             {
-                int enterDigit = AskForInt("Press 1 to play or 2 to quit: ");
+                var enterDigit = AskForInt("\n\t\t\tPress 1 to play or 2 to quit: ");
 
                 if (enterDigit == 1)
                 {
@@ -28,7 +28,6 @@ namespace LabyringthConsole
                 {
                     quit = false;
                 }
-
             }
         }
 

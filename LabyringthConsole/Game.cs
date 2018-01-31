@@ -8,12 +8,15 @@ namespace LabyringthConsole
 {
     internal class Game
     {
+        private List<int> _visitedBlocks = new List<int>();
+        private int _counter;
         private int _totalPoint = 0;
         private readonly Random _rnd = new Random();
         private readonly Map _map;
         private Pointer _pointer;
         private ConsoleKey _lastKeyPressed;
         private bool _quit = true;
+
         public Game(int width, int height)
         {
             _map = new Map(width, height);
@@ -42,14 +45,15 @@ namespace LabyringthConsole
             // game over
         }
 
-
+        
         private void CheckKey(ConsoleKey key)
         {
             switch (key)
             {
                 case (ConsoleKey.DownArrow):
-                    if (_pointer.Y < _map.Height - 1)
+                    if (_pointer.Y < _map.Height - 1)   // Checks if not on bottom edge
                     {
+                        //Check for backtrack
                         if (ConsoleKey.DownArrow == _lastKeyPressed)
                         {
                             _lastKeyPressed = key;
@@ -63,8 +67,10 @@ namespace LabyringthConsole
                     }
                     break;
                 case (ConsoleKey.UpArrow):
-                    if (_pointer.Y > 0)
+                    if (_pointer.Y > 0)                 // Checks if not on top edge
                     {
+
+                        //Check for backtrack
                         if (ConsoleKey.UpArrow == _lastKeyPressed)
                         {
                             _lastKeyPressed = key;
@@ -78,8 +84,9 @@ namespace LabyringthConsole
                     }
                     break;
                 case (ConsoleKey.LeftArrow):
-                    if (_pointer.X > 0)
+                    if (_pointer.X > 0)                 // Checks if not on left edge
                     {
+                        //Check for backtrack
                         if (ConsoleKey.LeftArrow == _lastKeyPressed)
                         {
                             _lastKeyPressed = key;
@@ -93,8 +100,9 @@ namespace LabyringthConsole
                     }
                     break;
                 case (ConsoleKey.RightArrow):
-                    if (_pointer.X < _map.Width - 1)
+                    if (_pointer.X < _map.Width - 1)    // Checks if not on right edge
                     {
+                        //Check for backtrack
                         if (ConsoleKey.RightArrow == _lastKeyPressed)
                         {
                             _lastKeyPressed = key;
@@ -112,10 +120,8 @@ namespace LabyringthConsole
                     Console.Clear();
                     break;
                 default:
-                    Console.WriteLine("Please use arrow keys");
                     break;
             }
-
         }
 
 
@@ -127,13 +133,14 @@ namespace LabyringthConsole
             return key;
         }
 
+
+        //Prints the map
         private void PrintMap()
         {
+            List<List<int>> cells = new List<List<int>>();
             Console.WriteLine("________________");
             for (int y = 0; y < _map.Height; y++)
             {
-                //Console.BackgroundColor = ConsoleColor.Gray;
-
                 Console.Write("|");
                 for (int x = 0; x < _map.Width; x++)
                 {
@@ -148,12 +155,15 @@ namespace LabyringthConsole
 
                     else
                     {
-                        Console.Write(_rnd.Next(1, 10));
+                      _counter = _rnd.Next(1, 10);
+                        _visitedBlocks.Add(_counter);
+                        Console.Write(_counter);
                     }
-
+                    
                     if (blockToMove != null)
                     {
                         Console.ForegroundColor = blockToMove.Color;
+                        Console.BackgroundColor = ConsoleColor.Red;
                         Console.Write(blockToMove.MapSymbol);
                         Console.ResetColor();
                     }

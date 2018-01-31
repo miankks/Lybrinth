@@ -8,6 +8,6 @@ namespace LabyringthConsole
 {
     internal class Cell
     {
-        public Block Block { get; set; }
+        //public Block Block { get; set; }
     }
 }

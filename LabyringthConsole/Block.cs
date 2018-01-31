@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LabyringthConsole
 {
-    class Block
+    internal class Block
     {
         public string MapSymbol { get; }
         public ConsoleColor Color { get; protected set; }
